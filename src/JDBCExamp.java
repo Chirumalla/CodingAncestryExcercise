@@ -1,0 +1,50 @@
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import com.mysql.jdbc.Statement;
+
+public class JDBCExamp {
+
+  public static void main(String[] argv) {
+
+	System.out.println("-------- MySQL JDBC Connection Testing ------------");
+
+	try {
+		Class.forName("com.mysql.jdbc.Driver");
+	} catch (ClassNotFoundException e) {
+		System.out.println("Where is your MySQL JDBC Driver?");
+		e.printStackTrace();
+		return;
+	}
+
+	System.out.println("MySQL JDBC Driver Registered!");
+	Connection connection = null;
+
+	try {
+		connection = DriverManager
+		.getConnection("jdbc:mysql://localhost:3306/CODINGEXCERCISE","root", "Lakshmi");
+		if(connection.isClosed()) {
+			System.out.println("bye");
+		}
+		java.sql.Statement stmt = connection.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * from person");
+		while (rs.next()) {
+			  
+			  System.out.println(rs.getString("name"));
+			}
+
+	} catch (SQLException e) {
+		System.out.println("Connection Failed! Check output console");
+		e.printStackTrace();
+		return;
+	}
+
+	if (connection != null) {
+		System.out.println("You made it, take control your database now!");
+	} else {
+		System.out.println("Failed to make connection!");
+	}
+  }
+}
